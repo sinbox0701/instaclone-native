@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import {Ionicons} from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import { Asset } from "expo-asset";
-import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import LoggedOutNav from './navigators/LoggedOutNav';
+import { ApolloProvider } from '@apollo/client';
+import client from './apollo';
   
 export default function App() {
   const [loading,setLoading] = useState(true);
@@ -25,9 +26,11 @@ export default function App() {
             />;
   }
   return (
-    <NavigationContainer>
-      <LoggedOutNav/>
-    </NavigationContainer>
+    <ApolloProvider client={client}>
+      <NavigationContainer>
+        <LoggedOutNav/>
+      </NavigationContainer>
+    </ApolloProvider>
   );
 }
 
