@@ -79,9 +79,9 @@ export default function CreateAccount(){
                 lastOne={true}
                 placeholderTextColor={"rgba(255,255,255,0.6)"}
                 onChangeText={(text)=>setValue("password",text)}
-                onPress={handleSubmit(onValid)}
+                onSubmitEditing={handleSubmit(onValid)}
             />
-            <AuthButton text="Create Account" disabled={true} onPress={handleSubmit} />
+            <AuthButton text="Create Account" disabled={false} onPress={handleSubmit(onValid)} />
         </AuthLayout>
     );
 }
