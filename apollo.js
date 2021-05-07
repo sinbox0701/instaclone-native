@@ -8,7 +8,7 @@ export const isLoggedInVar = makeVar(false);
 export const tokenVar = makeVar("");
 
 export const logUserIn = async (token) => {
-    await AsyncStorage.setItem(TOKEN,JSON.stringify(token));
+    await AsyncStorage.setItem(TOKEN,token);
     isLoggedInVar(true);
     tokenVar(token);
 }; 
@@ -19,10 +19,11 @@ export const logUserOut = async () => {
 }
 
 const httpLink = createHttpLink({
-    uri:"http://9e28c61182dc.ngrok.io/graphql",//변경될 수 있음
+    uri:"http://91b7c6fa84b3.ngrok.io/graphql",//변경될 수 있음
 });
 
-const authLink = setContext((_,{headers})=> {
+const authLink = setContext((_,{headers} )=> {
+    
     return {
         headers:{
             ...headers,
