@@ -8,8 +8,8 @@ import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from "../fragments";
 import Photo from "../components/Photo";
 
 const FEED_QUERY = gql`
-    query seeFeed{
-        seeFeed {
+    query seeFeed($offset: Int!){
+        seeFeed(offset: $offset) {
             ...PhotoFragment
             user {
                 username
@@ -27,7 +27,11 @@ const FEED_QUERY = gql`
     ${COMMENT_FRAGMENT}
 `
 export default function Feed() {
-    const { data, loading, refetch } = useQuery(FEED_QUERY);//refetech는 query를 불러오는 function
+    const { data, loading, refetch, fetchMore } = useQuery(FEED_QUERY,{
+        variables:{
+            offset:0,
+        }
+    });//fetchMore 추가 fetch 설정
     
     const renderPhoto = ({ item: photo }) => {
         return (
@@ -46,6 +50,14 @@ export default function Feed() {
     return (
         <ScreenLayout loading={loading}>
             <FlatList
+                onEndReachedThreshold={0.05}//List 끝을 설정
+                onEndReached={() =>
+                    fetchMore({
+                        variables: {
+                        offset: data?.seeFeed?.length,
+                        },
+                    })
+                }//끝에 도달하면 함수 작동
                 refreshing={refreshing}
                 onRefresh={refresh}
                 style={{width:"100%"}}
