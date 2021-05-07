@@ -50,7 +50,7 @@ export default function Feed() {
     return (
         <ScreenLayout loading={loading}>
             <FlatList
-                onEndReachedThreshold={0.05}//List 끝을 설정
+                onEndReachedThreshold={0.02}//List 끝을 설정
                 onEndReached={() =>
                     fetchMore({
                         variables: {
