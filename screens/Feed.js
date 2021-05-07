@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import React from "react";
+import React, { useState } from "react";
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import ScreenLayout from "../components/ScreenLayout";
@@ -27,7 +27,7 @@ const FEED_QUERY = gql`
     ${COMMENT_FRAGMENT}
 `
 export default function Feed() {
-    const { data, loading } = useQuery(FEED_QUERY);
+    const { data, loading, refetch } = useQuery(FEED_QUERY);//refetech는 query를 불러오는 function
     
     const renderPhoto = ({ item: photo }) => {
         return (
@@ -35,9 +35,19 @@ export default function Feed() {
         );
     };
     
+    const refresh = async () => {
+        setRefreshing(true);
+        await refetch();
+        setRefreshing(false);
+    };
+
+    const [refreshing, setRefreshing] = useState(false);
+
     return (
         <ScreenLayout loading={loading}>
             <FlatList
+                refreshing={refreshing}
+                onRefresh={refresh}
                 style={{width:"100%"}}
                 showsVerticalScrollIndicator={false}
                 data={data?.seeFeed}
