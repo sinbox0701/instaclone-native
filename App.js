@@ -31,8 +31,9 @@ export default function App() {
     }
     await persistCache({
         cache,
-        storage:new AsyncStorageWrapper(AsyncStorage)
-    });//cache 사용방법 --> 백서버가 죽어도 데이터가 한번 불러온건 저장된다.
+        storage:new AsyncStorageWrapper(AsyncStorage),
+        serialize:false//schema 변경 가능하게 해줌 이걸 안하면 이전에 저장된 schema가 변경X
+    });
     return preloadAssets();
   }
   if(loading){
