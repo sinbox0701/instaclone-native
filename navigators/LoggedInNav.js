@@ -1,13 +1,15 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import TabIcon from "../components/nav/TabIcon";
 import SharedStackNav from "./SharedStackNav";
+import useMe from "../hooks/useMe";
 
 const Tabs = createBottomTabNavigator();
 
-export default function LoggedInNav() {//Component 대신 children 사용
-  return (
+export default function LoggedInNav() {
+    const {data} = useMe();
+    return (
         <Tabs.Navigator
             tabBarOptions={{
                 activeTintColor:"white",
@@ -42,8 +44,20 @@ export default function LoggedInNav() {//Component 대신 children 사용
                 name="Camera" 
                 component={View}
                 options={{
-                    tabBarIcon:({focused,color,size})=>(
-                        <TabIcon iconName={"camera"} color={color} focused={focused} />
+                    tabBarIcon:({focused,color,size})=> (
+                        data?.me?.avatar ? (
+                            <Image
+                                source={{uri:data.me.avatar}}
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    borderRadius:10,
+                                    ...(focused && {borderColor:"white", borderWidth:1})
+                                }}
+                            />
+                        ) : (
+                            <TabIcon iconName={"camera"} color={color} focused={focused} />
+                        )
                     )
                 }} 
             />
