@@ -21,7 +21,7 @@ const SEE_PHOTO = gql`
   ${PHOTO_FRAGMENT}
 `;
 
-export default function Photo({ route }) {
+export default function PhotoScreen({ route }) {
     const {data,loading,refetch} = useQuery(SEE_PHOTO,{
         variables:{
             id:route?.params?.photoId

@@ -55,20 +55,8 @@ export default function TabsNav() {
                     };
                 }}
                 options={{
-                    tabBarIcon:({focused,color,size})=> (
-                        data?.me?.avatar ? (
-                            <Image
-                                source={{uri:data.me.avatar}}
-                                style={{
-                                    height:20,
-                                    width:20,
-                                    borderRadius:10,
-                                    ...(focused && {borderColor:"white", borderWidth:1})
-                                }}
-                            />
-                        ) : (
-                            <TabIcon iconName={"camera"} color={color} focused={focused} />
-                        )
+                    tabBarIcon:({focused,color,size})=> ( 
+                        <TabIcon iconName={"camera"} color={color} focused={focused} />
                     )
                 }} 
             />
@@ -86,7 +74,19 @@ export default function TabsNav() {
                 name="Me" 
                 options={{
                     tabBarIcon:({focused,color,size})=>(
-                        <TabIcon iconName={"person"} color={color} focused={focused} />
+                        data?.me?.avatar ? (
+                            <Image
+                                source={{uri:data.me.avatar}}
+                                style={{
+                                    height:20,
+                                    width:20,
+                                    borderRadius:10,
+                                    ...(focused && {borderColor:"white", borderWidth:1})
+                                }}
+                            />
+                        ) : (
+                            <TabIcon iconName={"person"} color={color} focused={focused} />
+                        )
                     )
                 }}
             >
