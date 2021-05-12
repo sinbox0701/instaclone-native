@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 import styled from "styled-components/native";
 import { colors } from "../colors";
-import { FlatList, Image, TouchableOpacity, useWindowDimensions } from "react-native";
+import { FlatList, Image, StatusBar, TouchableOpacity, useWindowDimensions } from "react-native";
 
 const Container = styled.View`
   flex: 1;
@@ -89,6 +89,7 @@ export default function SelectPhoto({navigation}) {
     );
     return (
         <Container>
+            <StatusBar />
             <Top>
             {chosenPhoto !== "" ? (
                 <Image
