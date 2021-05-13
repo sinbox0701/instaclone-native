@@ -96,9 +96,9 @@ export default function TakePhoto({ navigation }) {
         if (save) {
             await MediaLibrary.saveToLibraryAsync(takenPhoto);
         }
-        // navigation.navigate("UploadForm", {
-        //     file: takenPhoto,
-        // });
+        navigation.navigate("UploadForm", {
+            file: takenPhoto,
+        });
     };
     const onUpload = () => {
         Alert.alert("Save photo?", "Save photo & upload or just upload", [

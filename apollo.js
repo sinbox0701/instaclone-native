@@ -2,6 +2,8 @@ import { ApolloClient, createHttpLink, InMemoryCache, makeVar } from "@apollo/cl
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {setContext} from "@apollo/client/link/context";
 import { offsetLimitPagination } from "@apollo/client/utilities";
+import {onError} from "@apollo/client/link/error";
+import {createUploadLink} from "apollo-upload-client";
 
 const TOKEN = "token";
 
@@ -19,7 +21,7 @@ export const logUserOut = async () => {
     tokenVar(null);
 }
 
-const httpLink = createHttpLink({
+const uploadHttpLink = createUploadLink({
     uri:"http://75b237783ae0.ngrok.io/graphql",//변경될 수 있음
 });
 
@@ -33,6 +35,15 @@ const authLink = setContext((_,{headers} )=> {
     };
 });
 
+const onErrorLink = onError(({graphQLErrors, networkError})=>{
+    if(graphQLErrors){
+        console.log(`GraphQL Error`,graphQLErrors);
+    }
+    if(networkError){
+        console.log(`Network Error`,networkError);
+    }
+});
+
 export const cache = new InMemoryCache({
     typePolicies:{
         Query:{
@@ -44,7 +55,7 @@ export const cache = new InMemoryCache({
 }); 
 
 const client = new ApolloClient({
-    link: authLink.concat(httpLink),
+    link: authLink.concat(onErrorLink).concat(uploadHttpLink),
     cache
 });
 
