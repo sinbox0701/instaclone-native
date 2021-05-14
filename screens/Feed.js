@@ -1,7 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
 import ScreenLayout from "../components/ScreenLayout";
 import { logUserOut } from "../apollo";
 import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from "../fragments";
@@ -27,7 +28,7 @@ const FEED_QUERY = gql`
     ${PHOTO_FRAGMENT}
     ${COMMENT_FRAGMENT}
 `
-export default function Feed() {
+export default function Feed({navigation}) {
     const { data, loading, refetch, fetchMore } = useQuery(FEED_QUERY,{
         variables:{
             offset:0,
@@ -48,6 +49,19 @@ export default function Feed() {
 
     const [refreshing, setRefreshing] = useState(false);
 
+    const MessageButton = () => (
+        <TouchableOpacity
+            style={{marginRight:25}}
+            onPress={()=>navigation.navigate("Messages")}
+        >
+            <Ionicons name="paper-plane" color="white" size={20} />
+        </TouchableOpacity>
+    );
+    useEffect(()=>{
+        navigation.setOptions({
+            headerRight:MessageButton
+        })
+    },[]);
     return (
         <ScreenLayout loading={loading}>
             <FlatList
