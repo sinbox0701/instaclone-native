@@ -20,7 +20,7 @@ export default function LoggedInNav() {
                     headerBackImage:({tintColor})=>(
                         <Ionicons color={tintColor} name="close" />
                     ),
-                    title="Upload",
+                    title:"Upload",
                     headerTintColor:"white",
                     headerStyle:{
                         backgroundColor:"black",
