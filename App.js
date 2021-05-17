@@ -29,11 +29,11 @@ export default function App() {
       isLoggedInVar(true);
       tokenVar(token);
     }
-    await persistCache({
-        cache,
-        storage:new AsyncStorageWrapper(AsyncStorage),
-        serialize:false//schema 변경 가능하게 해줌 이걸 안하면 이전에 저장된 schema가 변경X
-    });
+    // await persistCache({
+    //     cache,
+    //     storage:new AsyncStorageWrapper(AsyncStorage),
+    //     serialize:false//schema 변경 가능하게 해줌 이걸 안하면 이전에 저장된 schema가 변경X
+    // });
     return preloadAssets();
   }
   if(loading){
@@ -51,4 +51,3 @@ export default function App() {
     </ApolloProvider>
   );
 }
-
