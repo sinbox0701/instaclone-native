@@ -1,11 +1,25 @@
 import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { gql, useMutation, useQuery } from "@apollo/client"
+import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client"
 import { FlatList, KeyboardAvoidingView, Text, View } from "react-native";
 import styled from "styled-components";
 import ScreenLayout from "../components/ScreenLayout";
 import { useForm } from "react-hook-form";
 import useMe from "../hooks/useMe";
+
+const ROOM_UPDATES = gql`
+    subscription roomUpdates($id: Int!) {
+        roomUpdates(id: $id) {
+            id
+            payload
+            user {
+                username
+                avatar
+            }
+            read
+        }
+    }
+`;
 
 const SEND_MESSAGE_MUTATION = gql`
   mutation sendMessage($payload: String!, $roomId: Int, $userId: Int) {
@@ -96,7 +110,7 @@ export default function Room({route,navigation}) {
                     avatar:meData.me.avatar
                 },
                 read:true,
-                __typename="Message"//cache를 속이기 위해
+                __typename="Message"
             };
             const messageFragment = cache.writeFragment({
                 fragment: gql`
@@ -125,11 +139,60 @@ export default function Room({route,navigation}) {
     const [sendMessageMutation,{loading:sendingMessage}] = useMutation(SEND_MESSAGE_MUTATION,{
         update:updateSendMessage
     });
-    const { data, loading } = useQuery(ROOM_QUERY,{
+    const { data, loading, subscribeToMore } = useQuery(ROOM_QUERY,{
         variables:{
             id:route?.params?.id
         }
-    });
+    });//subscribeToMore --> subscribe하는 hook, 캐시 접근 가능
+    const client = useApolloClient();
+    const updateQuery = (prevQuery, options) => {
+        const {
+            subscriptionData:{
+                data:{roomUpdates:message}
+            }
+        } = options;
+        if(message.id){
+            const incomingMessage = client.cache.writeFragment({
+                fragment: gql`
+                    fragment NewMessage on Message {
+                        id
+                        payload
+                        user{
+                            username
+                            avatar
+                        }
+                        read
+                    }
+                `,
+                data:message
+            });
+            client.cache.modify({
+                id:`Room:${route.params.id}`,
+                fields:{
+                    message(prev){
+                        const existingMessage = prev.find(
+                            (aMessage) => aMessage.__ref === incomingMessage.__ref
+                        );
+                        if (existingMessage) {
+                            return prev;
+                        }//backend pubsub의 메모리부족현상에 의해 야매코드 작성
+                        return [...prev, incomingMessage];
+                    }
+                }
+            });
+        }
+    };
+    useEffect(()=>{
+        if(data?.seeRoom){
+            subscribeToMore({
+                document:ROOM_UPDATES,//subscription gql
+                variables:{
+                    id:route?.params?.id
+                },
+                updateQuery
+            });
+        }
+    },[data]);
     const onValid = ({message}) => {
         if(!sendingMessage){ 
             sendMessageMutation({
