@@ -1,10 +1,10 @@
 import { gql, useQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { FlatList } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import ScreenLayout from "../components/ScreenLayout";
-import { logUserOut } from "../apollo";
+//import { logUserOut } from "../apollo";
 import { COMMENT_FRAGMENT, PHOTO_FRAGMENT } from "../fragments";
 import Photo from "../components/Photo";
 

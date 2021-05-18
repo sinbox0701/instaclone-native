@@ -1,7 +1,7 @@
 import { gql, useLazyQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, Image, Text, TextInput, useWindowDimensions, View } from "react-native";
+import { ActivityIndicator, Image, useWindowDimensions, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 import DismissKeyboard from "../components/DismissKeyboard";

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client"
-import { FlatList, KeyboardAvoidingView, Text, View } from "react-native";
+import { FlatList, KeyboardAvoidingView, View } from "react-native";
 import styled from "styled-components";
 import ScreenLayout from "../components/ScreenLayout";
 import { useForm } from "react-hook-form";
@@ -110,7 +110,7 @@ export default function Room({route,navigation}) {
                     avatar:meData.me.avatar
                 },
                 read:true,
-                __typename="Message"
+                __typename:"Message"
             };
             const messageFragment = cache.writeFragment({
                 fragment: gql`

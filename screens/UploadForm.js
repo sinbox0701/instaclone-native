@@ -2,7 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import {ReactNativeFile} from "apollo-upload-client";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 import { colors } from "../colors";

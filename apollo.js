@@ -1,4 +1,4 @@
-import { ApolloClient, createHttpLink, InMemoryCache, makeVar, split } from "@apollo/client";
+import { ApolloClient, InMemoryCache, makeVar, split } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {setContext} from "@apollo/client/link/context";
 import { getMainDefinition, offsetLimitPagination } from "@apollo/client/utilities";
@@ -8,6 +8,7 @@ import {WebSocketLink} from "@apollo/client/link/ws";
 
 
 const TOKEN = "token";
+const URI = "http://58c8bf004d63.ngrok.io/graphql";//변경될 수 있음
 
 export const isLoggedInVar = makeVar(false);
 export const tokenVar = makeVar("");
@@ -24,11 +25,11 @@ export const logUserOut = async () => {
 }
 
 const uploadHttpLink = createUploadLink({
-    uri:"http://d559b3814fab.ngrok.io/graphql",//변경될 수 있음
+    uri:URI,
 });
 
 const wsLink = new WebSocketLink({
-    uri:"ws://d559b3814fab.ngrok.io/graphql",//변경될 수 있음,
+    uri:URI,
     options:{
         connectionParams: () => ({
             token:tokenVar()
